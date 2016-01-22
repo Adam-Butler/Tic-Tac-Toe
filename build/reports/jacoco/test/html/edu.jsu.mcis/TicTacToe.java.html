@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TicTacToe.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TicTacToe</a> &gt; <a href="index.source.html" class="el_package">edu.jsu.mcis</a> &gt; <span class="el_source">TicTacToe.java</span></div><h1>TicTacToe.java</h1><pre class="source lang-java linenums">package edu.jsu.mcis;
+import java.util.Scanner;
+import java.util.*;
+
+
+public class TicTacToe {
+    
+    private char[][] board;
+    private boolean Player1;
+    private boolean gameStatus;
+<span class="fc" id="L11">    public TicTacToe(){</span>
+<span class="fc" id="L12">        board = new char[3][3];</span>
+<span class="fc bfc" id="L13" title="All 2 branches covered.">        for(int i = 0; i&lt;3;i++){</span>
+<span class="fc bfc" id="L14" title="All 2 branches covered.">            for(int j =0; j&lt;3;j++){</span>
+<span class="fc" id="L15">                board[i][j] = '~' ;</span>
+            }
+        }
+<span class="fc" id="L18">        Player1 = true;</span>
+<span class="fc" id="L19">        gameStatus = true;</span>
+<span class="fc" id="L20">    }</span>
+    public void printBoard(){
+<span class="nc" id="L22">        System.out.println(&quot;-------------&quot;);</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        for(int i = 0; i &lt; 3; i++){</span>
+<span class="nc" id="L24">            System.out.print(&quot;| &quot;);</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">            for(int j = 0; j &lt; 3;  j++){</span>
+<span class="nc" id="L26">                System.out.print(board[i][j] + &quot; | &quot;);</span>
+            }
+<span class="nc" id="L28">            System.out.println();</span>
+<span class="nc" id="L29">            System.out.println(&quot;-------------&quot;);</span>
+        }
+        
+<span class="nc" id="L32">    }</span>
+
+    public char[][] getBoard(){
+<span class="fc" id="L35">        return board;</span>
+    }
+    
+    public void markSpot(int r, int c){
+<span class="pc bpc" id="L39" title="2 of 6 branches missed.">        if(Player1 &amp;&amp; board[r][c] == '~' &amp;&amp; checkThatInputIsInRange(r, c)== 1){</span>
+<span class="fc" id="L40">            board[r][c] = 'X' ;</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">            if(!checkForAWin()){</span>
+<span class="fc" id="L42">              Player1 = false;  </span>
+            }
+            
+        }
+<span class="pc bpc" id="L46" title="2 of 6 branches missed.">        else if(!Player1 &amp;&amp; board[r][c] == '~' &amp;&amp; checkThatInputIsInRange(r,c) == 1){</span>
+<span class="fc" id="L47">            board[r][c] = 'O' ;</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            if(!checkForAWin()){</span>
+<span class="fc" id="L49">               Player1 = true; </span>
+            }
+            
+        }
+<span class="fc" id="L53">    }</span>
+    
+    public int checkThatInputIsInRange(int r, int c){
+<span class="pc bpc" id="L56" title="4 of 8 branches missed.">        if(r &lt; 0 || r &gt; 2 || c &lt; 0 || c &gt; 2){</span>
+<span class="nc" id="L57">            throw new IndexOutOfBoundsException();</span>
+        }
+<span class="fc" id="L59">        else return 1;</span>
+       
+    }
+    
+    public boolean checkHorizontalWin(){
+        
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for(int i = 0; i &lt; 3;i++){</span>
+<span class="pc bpc" id="L66" title="2 of 10 branches missed.">          if((board[i][0] == board[i][1] &amp;&amp; board [i][1] == board[i][2]) &amp;&amp; board[i][0] != '~' &amp;&amp; board[i][1] != '~' &amp;&amp; board[i][2] != '~' ) {</span>
+<span class="fc" id="L67">              gameStatus = false;</span>
+<span class="fc" id="L68">              return true;</span>
+              
+          } 
+        }
+<span class="fc" id="L72">        return false;</span>
+    }
+    
+    public boolean checkVerticalWin(){
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for(int i = 0; i &lt; 3; i++){</span>
+<span class="pc bpc" id="L77" title="2 of 10 branches missed.">            if((board[0][i] == board[1][i] &amp;&amp; board[1][i] == board[2][i]) &amp;&amp; board[0][i] != '~' &amp;&amp; board[1][i] != '~' &amp;&amp; board[2][i] != '~'){</span>
+<span class="fc" id="L78">                gameStatus = false;</span>
+<span class="fc" id="L79">                return true;</span>
+                
+            }
+        } 
+<span class="fc" id="L83">        return false;</span>
+    } 
+
+    public boolean checkDiagnalWin(){
+<span class="pc bpc" id="L87" title="2 of 10 branches missed.">        if((board[0][0] == board[1][1] &amp;&amp; board[1][1] == board[2][2])&amp;&amp; board[0][0] != '~' &amp;&amp; board[1][1] != '~' &amp;&amp; board[2][2] != '~' ){</span>
+<span class="fc" id="L88">            gameStatus = false;</span>
+<span class="fc" id="L89">            return true;</span>
+            
+        }
+<span class="pc bpc" id="L92" title="5 of 10 branches missed.">        else if((board[0][2] == board[1][1] &amp;&amp; board[1][1] == board[2][0]) &amp;&amp; board[2][2] != '~' &amp;&amp; board[1][1] != '~' &amp;&amp; board[2][0] != '~'){</span>
+<span class="nc" id="L93">            gameStatus = false;</span>
+<span class="nc" id="L94">            return true;</span>
+            
+        }
+<span class="fc" id="L97">        else return false;</span>
+    } 
+    
+    public boolean checkForAWin(){
+<span class="fc bfc" id="L101" title="All 6 branches covered.">        if(checkDiagnalWin() || checkHorizontalWin() || checkVerticalWin()){</span>
+<span class="fc" id="L102">            return true;</span>
+        }
+<span class="fc" id="L104">        else return false;</span>
+    }
+    
+    
+    public boolean checkForTie(){
+<span class="fc" id="L109">        int count = 0;</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        for(int i =0; i &lt; 3;i++){</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            for(int j =0;j &lt; 3;j++){</span>
+<span class="pc bpc" id="L112" title="1 of 4 branches missed.">                if(board[i][j]=='X' || board[i][j]=='O'){</span>
+<span class="fc" id="L113">                    count++;</span>
+                }
+            }
+        }
+<span class="pc bpc" id="L117" title="4 of 8 branches missed.">        if(count == 9 &amp;&amp; !checkVerticalWin() &amp;&amp; !checkDiagnalWin() &amp;&amp; !checkHorizontalWin()){</span>
+<span class="fc" id="L118">            gameStatus = false;</span>
+<span class="fc" id="L119">            return true;</span>
+           
+        }
+        else{
+<span class="nc" id="L123">            return false;</span>
+        }
+    }
+    
+    public boolean getGameStatus(){
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if(gameStatus){</span>
+<span class="fc" id="L129">            return true;</span>
+        }
+<span class="nc" id="L131">        else return false;</span>
+    }
+    
+    public boolean getCurrentPlayer(){
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if(Player1){</span>
+<span class="fc" id="L136">            return true;</span>
+        }
+        else{
+<span class="fc" id="L139">            return false;</span>
+        }
+    }
+
+	public static void main(String[] args) {
+<span class="nc" id="L144">		TicTacToe game = new TicTacToe();</span>
+<span class="nc" id="L145">        game.printBoard();</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        while(game.getGameStatus()){</span>
+            try{
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                if(game.getCurrentPlayer()){</span>
+<span class="nc" id="L149">                System.out.println(&quot;Player X, mark your spot!&quot;);</span>
+<span class="nc" id="L150">                Scanner scan = new Scanner(System.in);</span>
+<span class="nc" id="L151">                int r = scan.nextInt();</span>
+<span class="nc" id="L152">                int c = scan.nextInt();</span>
+<span class="nc" id="L153">                game.markSpot(r, c);</span>
+<span class="nc" id="L154">                game.printBoard();</span>
+<span class="nc bnc" id="L155" title="All 4 branches missed.">                if(game.checkForAWin() &amp;&amp; game.getCurrentPlayer()){</span>
+<span class="nc" id="L156">                    System.out.println(&quot;Player X wins!&quot;);</span>
+                }
+<span class="nc bnc" id="L158" title="All 4 branches missed.">                else if(game.checkForAWin() &amp;&amp; !game.getCurrentPlayer()){</span>
+<span class="nc" id="L159">                    System.out.println(&quot;Player O wins!&quot;);</span>
+                }
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                else if(game.checkForTie()){</span>
+<span class="nc" id="L162">                    System.out.println(&quot;Game is a tie!&quot;);</span>
+                }
+                
+<span class="nc" id="L165">            }</span>
+            else{
+<span class="nc" id="L167">                System.out.println(&quot;Player O, mark your spot!&quot;);</span>
+<span class="nc" id="L168">                Scanner scan = new Scanner(System.in);</span>
+<span class="nc" id="L169">                int r = scan.nextInt();</span>
+<span class="nc" id="L170">                int c = scan.nextInt();</span>
+<span class="nc" id="L171">                game.markSpot(r, c);</span>
+<span class="nc" id="L172">                game.printBoard(); </span>
+<span class="nc bnc" id="L173" title="All 4 branches missed.">                if(game.checkForAWin() &amp;&amp; game.getCurrentPlayer()){</span>
+<span class="nc" id="L174">                    System.out.println(&quot;Player X wins!&quot;);</span>
+                }
+<span class="nc bnc" id="L176" title="All 4 branches missed.">                else if(game.checkForAWin() &amp;&amp; !game.getCurrentPlayer()){</span>
+<span class="nc" id="L177">                    System.out.println(&quot;Player O wins!&quot;);</span>
+                }
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                else if(game.checkForTie()){</span>
+<span class="nc" id="L180">                    System.out.println(&quot;Game is a tie!&quot;);</span>
+                }
+            }
+            
+                
+<span class="nc" id="L185">            }catch(IndexOutOfBoundsException e){</span>
+<span class="nc" id="L186">               continue;</span>
+<span class="nc" id="L187">            }</span>
+            
+        }
+        
+<span class="nc" id="L191">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.1.201405082137</span></div></body></html>
