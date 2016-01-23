@@ -137,6 +137,17 @@ public class TicTacToeTest {
         assertTrue(tic.getGameStatus());
     }
     
+    @Test
+    public void testXWinsReverseDiagnally(){
+        TicTacToe tic = new TicTacToe();
+        tic.markSpot(1, 1);
+        tic.markSpot(0,0);
+        tic.markSpot(0, 2);
+        tic.markSpot(2,2);
+        tic.markSpot(2,0);
+        assertTrue(tic.checkDiagnalWin());
+        assertTrue(tic.getCurrentPlayer());
+    }
     
     
 }

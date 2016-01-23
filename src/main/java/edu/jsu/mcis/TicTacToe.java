@@ -89,7 +89,7 @@ public class TicTacToe {
             return true;
             
         }
-        else if((board[0][2] == board[1][1] && board[1][1] == board[2][0]) && board[2][2] != '~' && board[1][1] != '~' && board[2][0] != '~'){
+        else if((board[0][2] == board[1][1] && board[1][1] == board[2][0]) && board[0][2] != '~' && board[1][1] != '~' && board[2][0] != '~'){
             gameStatus = false;
             return true;
             
@@ -152,12 +152,15 @@ public class TicTacToe {
                     int c = scan.nextInt();
                     game.markSpot(r, c);
                     if(game.checkForAWin() && game.getCurrentPlayer()){
+                        game.printBoard();
                         System.out.println("Player X wins!");
                     }
                     else if(game.checkForAWin() && !game.getCurrentPlayer()){
+                        game.printBoard();
                         System.out.println("Player O wins!");
                     }
                     else if(game.checkForTie()){
+                        game.printBoard();
                         System.out.println("Game is a tie!");
                     }
                     if(game.checkForAWin() || game.checkForTie()){
@@ -178,12 +181,15 @@ public class TicTacToe {
                     int c = scan.nextInt();
                     game.markSpot(r, c);
                     if(game.checkForAWin() && game.getCurrentPlayer()){
+                        game.printBoard();
                         System.out.println("Player X wins!");
                     }
                     else if(game.checkForAWin() && !game.getCurrentPlayer()){
+                        game.printBoard();
                         System.out.println("Player O wins!");
                     }
                     else if(game.checkForTie()){
+                        game.printBoard();
                         System.out.println("Game is a tie!");
                     }
                     if(game.checkForAWin() || game.checkForTie()){
