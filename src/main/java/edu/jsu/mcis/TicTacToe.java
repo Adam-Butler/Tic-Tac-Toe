@@ -31,8 +31,8 @@ public class TicTacToe {
         
     }
 
-    public char[][] getBoard(){
-        return board;
+    public char getMark(int r, int c){
+        return board[r][c];
     }
     
     public void markSpot(int r, int c){
@@ -142,47 +142,63 @@ public class TicTacToe {
 
 	public static void main(String[] args) {
 		TicTacToe game = new TicTacToe();
-        game.printBoard();
         while(game.getGameStatus()){
             try{
-                if(game.getCurrentPlayer()){
-                System.out.println("Player X, mark your spot!");
-                Scanner scan = new Scanner(System.in);
-                int r = scan.nextInt();
-                int c = scan.nextInt();
-                game.markSpot(r, c);
                 game.printBoard();
-                if(game.checkForAWin() && game.getCurrentPlayer()){
-                    System.out.println("Player X wins!");
-                }
-                else if(game.checkForAWin() && !game.getCurrentPlayer()){
-                    System.out.println("Player O wins!");
-                }
-                else if(game.checkForTie()){
-                    System.out.println("Game is a tie!");
-                }
+                if(game.getCurrentPlayer()){    
+                    System.out.println("Player X, mark your spot!");
+                    Scanner scan = new Scanner(System.in);
+                    int r = scan.nextInt();
+                    int c = scan.nextInt();
+                    game.markSpot(r, c);
+                    if(game.checkForAWin() && game.getCurrentPlayer()){
+                        System.out.println("Player X wins!");
+                    }
+                    else if(game.checkForAWin() && !game.getCurrentPlayer()){
+                        System.out.println("Player O wins!");
+                    }
+                    else if(game.checkForTie()){
+                        System.out.println("Game is a tie!");
+                    }
+                    if(game.checkForAWin() || game.checkForTie()){
+                        System.out.println("Play Again? Y/N");
+                        Scanner s = new Scanner(System.in);
+                        String p = s.next();
+                        if(p.equals("Y") || p.equals("y")){
+                            game = new TicTacToe();
+                        }  
+                    }
                 
-            }
-            else{
-                System.out.println("Player O, mark your spot!");
-                Scanner scan = new Scanner(System.in);
-                int r = scan.nextInt();
-                int c = scan.nextInt();
-                game.markSpot(r, c);
-                game.printBoard(); 
-                if(game.checkForAWin() && game.getCurrentPlayer()){
-                    System.out.println("Player X wins!");
                 }
-                else if(game.checkForAWin() && !game.getCurrentPlayer()){
-                    System.out.println("Player O wins!");
-                }
-                else if(game.checkForTie()){
-                    System.out.println("Game is a tie!");
-                }
-            }
+                else{
+                     
+                    System.out.println("Player O, mark your spot!");
+                    Scanner scan = new Scanner(System.in);
+                    int r = scan.nextInt();
+                    int c = scan.nextInt();
+                    game.markSpot(r, c);
+                    if(game.checkForAWin() && game.getCurrentPlayer()){
+                        System.out.println("Player X wins!");
+                    }
+                    else if(game.checkForAWin() && !game.getCurrentPlayer()){
+                        System.out.println("Player O wins!");
+                    }
+                    else if(game.checkForTie()){
+                        System.out.println("Game is a tie!");
+                    }
+                    if(game.checkForAWin() || game.checkForTie()){
+                        System.out.println("Play Again? Y/N");
+                        Scanner s = new Scanner(System.in);
+                        String p = s.next();
+                        if(p.equals("Y") || p.equals("y")){
+                            game = new TicTacToe();
+                        }
+                    }
+                
+                }   
             
                 
-            }catch(IndexOutOfBoundsException e){
+            }catch(IndexOutOfBoundsException | InputMismatchException ex){
                continue;
             }
             
