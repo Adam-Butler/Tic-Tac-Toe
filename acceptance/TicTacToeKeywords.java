@@ -11,13 +11,13 @@ public class TicTacToeKeywords {
 	}
 	
 	public String getMark(int row, int col) {
-        if(t.getMark(row, col) == 'X'){
+        if(t.getMark(row, col).equals("X")){
             return "X";
         }
-        else if(t.getMark(row, col) == 'O'){
+        else if(t.getMark(row, col).equals("O")){
             return "O";
         }
-        else return "~";
+        else return "";
 		
 	}
     

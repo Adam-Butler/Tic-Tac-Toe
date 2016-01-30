@@ -1,69 +1,60 @@
 package edu.jsu.mcis;
 import java.util.Scanner;
 import java.util.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 
-public class TicTacToe {
+public class TicTacToe extends JFrame implements ActionListener{
     
-    private char[][] board;
+    private JButton[][] board;
     private boolean Player1;
     private boolean gameStatus;
+    
     public TicTacToe(){
-        board = new char[3][3];
+        setLayout(new GridLayout(3,3));
+        board = new JButton[3][3];
         for(int i = 0; i<3;i++){
             for(int j =0; j<3;j++){
-                board[i][j] = '~' ;
+                board[i][j] = new JButton("");
+                board[i][j].setPreferredSize(new Dimension(100,100));
+                board[i][j].addActionListener(this);
+                board[i][j].setName("Location"+i+""+j);
+                add(board[i][j]);    
             }
         }
         Player1 = true;
         gameStatus = true;
     }
-    public void printBoard(){
-        System.out.println("-------------");
-        for(int i = 0; i < 3; i++){
-            System.out.print("| ");
-            for(int j = 0; j < 3;  j++){
-                System.out.print(board[i][j] + " | ");
-            }
-            System.out.println();
-            System.out.println("-------------");
-        }
-        
-    }
-
-    public char getMark(int r, int c){
-        return board[r][c];
+   
+    
+    public String getMark(int r, int c){
+        return board[r][c].getText();
     }
     
     public void markSpot(int r, int c){
-        if(Player1 && board[r][c] == '~' && checkThatInputIsInRange(r, c)== 1){
-            board[r][c] = 'X' ;
+        if(getCurrentPlayer() && board[r][c].getText().equals("") ){
+            board[r][c].setText("X") ;
             if(!checkForAWin()){
               Player1 = false;  
             }
             
         }
-        else if(!Player1 && board[r][c] == '~' && checkThatInputIsInRange(r,c) == 1){
-            board[r][c] = 'O' ;
+        else if(!getCurrentPlayer() && board[r][c].getText().equals("") ){
+            board[r][c].setText("O");
             if(!checkForAWin()){
                Player1 = true; 
-            }
-            
+            }  
         }
     }
     
-    public int checkThatInputIsInRange(int r, int c){
-        if(r < 0 || r > 2 || c < 0 || c > 2){
-            throw new IndexOutOfBoundsException();
-        }
-        else return 1;
-       
-    }
+    
     
     public boolean checkHorizontalWin(){
-        
         for(int i = 0; i < 3;i++){
-          if((board[i][0] == board[i][1] && board [i][1] == board[i][2]) && board[i][0] != '~' && board[i][1] != '~' && board[i][2] != '~' ) {
+          if(board[i][0].getText().equals(board[i][1].getText())  && board [i][1].getText().equals(board[i][2].getText()) 
+              && !board[i][0].getText().equals("") && !board[i][1].getText().equals("") && !board[i][2].getText().equals("")) {
               gameStatus = false;
               return true;
               
@@ -74,7 +65,8 @@ public class TicTacToe {
     
     public boolean checkVerticalWin(){
         for(int i = 0; i < 3; i++){
-            if((board[0][i] == board[1][i] && board[1][i] == board[2][i]) && board[0][i] != '~' && board[1][i] != '~' && board[2][i] != '~'){
+            if(board[0][i].getText().equals(board[1][i].getText()) && board[1][i].getText().equals(board[2][i].getText())  
+                && !board[0][i].getText().equals("") && !board[1][i].getText().equals("") && !board[2][i].getText().equals("")){
                 gameStatus = false;
                 return true;
                 
@@ -84,12 +76,14 @@ public class TicTacToe {
     } 
 
     public boolean checkDiagnalWin(){
-        if((board[0][0] == board[1][1] && board[1][1] == board[2][2])&& board[0][0] != '~' && board[1][1] != '~' && board[2][2] != '~' ){
+        if(board[0][0].getText().equals(board[1][1].getText()) && board[1][1].getText().equals(board[2][2].getText()) && 
+             !board[0][0].getText().equals("") && !board[1][1].getText().equals("") && !board[2][2].getText().equals("")){
             gameStatus = false;
             return true;
             
         }
-        else if((board[0][2] == board[1][1] && board[1][1] == board[2][0]) && board[0][2] != '~' && board[1][1] != '~' && board[2][0] != '~'){
+        else if(board[0][2].getText().equals(board[1][1].getText()) && board[1][1].getText().equals(board[2][0].getText()) 
+                 && !board[0][2].getText().equals("") && !board[1][1].getText().equals("") && !board[2][0].getText().equals("")){
             gameStatus = false;
             return true;
             
@@ -109,7 +103,7 @@ public class TicTacToe {
         int count = 0;
         for(int i =0; i < 3;i++){
             for(int j =0;j < 3;j++){
-                if(board[i][j]=='X' || board[i][j]=='O'){
+                if(board[i][j].getText().equals("X") || board[i][j].getText().equals("O")){
                     count++;
                 }
             }
@@ -139,76 +133,42 @@ public class TicTacToe {
             return false;
         }
     }
+    public void actionPerformed(ActionEvent event){
+        JButton b = (JButton)event.getSource();
+        String loc = b.getName().substring(8);
+        int r= Integer.parseInt(loc.substring(0,1));
+        int c = Integer.parseInt(loc.substring(1,2));
+        markSpot(r,c);
+        b.setText(getMark(r,c));
+        whoWins();  
+    }
+    
+    public void whoWins(){
+        final String s;
+        if(checkForAWin() && getCurrentPlayer()){
+            s = "X";
+        }
+        else if(checkForAWin() && !getCurrentPlayer()){
+            s = "O";
+        }
+        else if(checkForTie()){
+            s = "TIE";
+        }
+        else{s = "";}
+        if(s.length() > 0){
+            new Thread(new Runnable(){
+                public void run(){
+                    JOptionPane.showMessageDialog(null, "The winner is "+ s, "Game Over",JOptionPane.INFORMATION_MESSAGE);
+                }
+            }).start();
+        }      
+    }
 
 	public static void main(String[] args) {
-		TicTacToe game = new TicTacToe();
-        while(game.getGameStatus()){
-            try{
-                game.printBoard();
-                if(game.getCurrentPlayer()){    
-                    System.out.println("Player X, mark your spot!");
-                    Scanner scan = new Scanner(System.in);
-                    int r = scan.nextInt();
-                    int c = scan.nextInt();
-                    game.markSpot(r, c);
-                    if(game.checkForAWin() && game.getCurrentPlayer()){
-                        game.printBoard();
-                        System.out.println("Player X wins!");
-                    }
-                    else if(game.checkForAWin() && !game.getCurrentPlayer()){
-                        game.printBoard();
-                        System.out.println("Player O wins!");
-                    }
-                    else if(game.checkForTie()){
-                        game.printBoard();
-                        System.out.println("Game is a tie!");
-                    }
-                    if(game.checkForAWin() || game.checkForTie()){
-                        System.out.println("Play Again? Y/N");
-                        Scanner s = new Scanner(System.in);
-                        String p = s.next();
-                        if(p.equals("Y") || p.equals("y")){
-                            game = new TicTacToe();
-                        }  
-                    }
-                
-                }
-                else{
-                     
-                    System.out.println("Player O, mark your spot!");
-                    Scanner scan = new Scanner(System.in);
-                    int r = scan.nextInt();
-                    int c = scan.nextInt();
-                    game.markSpot(r, c);
-                    if(game.checkForAWin() && game.getCurrentPlayer()){
-                        game.printBoard();
-                        System.out.println("Player X wins!");
-                    }
-                    else if(game.checkForAWin() && !game.getCurrentPlayer()){
-                        game.printBoard();
-                        System.out.println("Player O wins!");
-                    }
-                    else if(game.checkForTie()){
-                        game.printBoard();
-                        System.out.println("Game is a tie!");
-                    }
-                    if(game.checkForAWin() || game.checkForTie()){
-                        System.out.println("Play Again? Y/N");
-                        Scanner s = new Scanner(System.in);
-                        String p = s.next();
-                        if(p.equals("Y") || p.equals("y")){
-                            game = new TicTacToe();
-                        }
-                    }
-                
-                }   
-            
-                
-            }catch(IndexOutOfBoundsException | InputMismatchException ex){
-               continue;
-            }
-            
-        }
-        
-	}
+        TicTacToe game = new TicTacToe();
+        game.setTitle("Tic Tac Toe");
+        game.setVisible(true);
+        game.pack();
+        game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
+    }		
 }

@@ -12,7 +12,7 @@ public class TicTacToeTest {
         int count = 0;
         for(int i =0;i < 3; i++){
             for(int j = 0;j<3;j++){
-               if(tic.getMark(i,j) == '~'){
+               if(tic.getMark(i,j).equals("")){
                    count++;
                } 
                else{
@@ -27,7 +27,7 @@ public class TicTacToeTest {
 	public void testMarkXInUpperRightCorner() {
         TicTacToe tic = new TicTacToe();
         tic.markSpot(0,2);
-		assertEquals(tic.getMark(0, 2), 'X');
+		assertEquals(tic.getMark(0, 2), "X");
        
 	}
 	
@@ -36,15 +36,10 @@ public class TicTacToeTest {
         TicTacToe tic = new TicTacToe();
         tic.markSpot(1, 0);
         tic.markSpot(2,0);
-		assertEquals(tic.getMark(2, 0), 'O');
+		assertEquals(tic.getMark(2, 0), "O");
        
 	}
     
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testThatInputHasToBeInRange(){
-        TicTacToe tic = new TicTacToe();
-        tic.markSpot(0, 3);   
-    }
          
     
 	
@@ -54,7 +49,7 @@ public class TicTacToeTest {
         tic.markSpot(1,1);
         tic.markSpot(1,1);
         
-		assertEquals(tic.getMark(1,1), 'X');
+		assertEquals(tic.getMark(1,1), "X");
         assertTrue(!tic.getCurrentPlayer());
 	}
 	
