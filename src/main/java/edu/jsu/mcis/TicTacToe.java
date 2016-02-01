@@ -7,11 +7,9 @@ import javax.swing.*;
 
 
 public class TicTacToe extends JFrame implements ActionListener{
-    
     private JButton[][] board;
     private boolean Player1;
     private boolean gameStatus;
-    
     public TicTacToe(){
         setLayout(new GridLayout(3,3));
         board = new JButton[3][3];
@@ -26,6 +24,7 @@ public class TicTacToe extends JFrame implements ActionListener{
         }
         Player1 = true;
         gameStatus = true;
+        
     }
    
     
@@ -50,32 +49,22 @@ public class TicTacToe extends JFrame implements ActionListener{
     }
     
     
-    
-    public boolean checkHorizontalWin(){
+    public boolean checkForAWin(){
         for(int i = 0; i < 3;i++){
-          if(board[i][0].getText().equals(board[i][1].getText())  && board [i][1].getText().equals(board[i][2].getText()) 
+            if(board[i][0].getText().equals(board[i][1].getText())  && board [i][1].getText().equals(board[i][2].getText()) 
               && !board[i][0].getText().equals("") && !board[i][1].getText().equals("") && !board[i][2].getText().equals("")) {
               gameStatus = false;
               return true;
               
-          } 
-        }
-        return false;
-    }
-    
-    public boolean checkVerticalWin(){
-        for(int i = 0; i < 3; i++){
-            if(board[0][i].getText().equals(board[1][i].getText()) && board[1][i].getText().equals(board[2][i].getText())  
+            } 
+            else if(board[0][i].getText().equals(board[1][i].getText()) && board[1][i].getText().equals(board[2][i].getText())  
                 && !board[0][i].getText().equals("") && !board[1][i].getText().equals("") && !board[2][i].getText().equals("")){
                 gameStatus = false;
                 return true;
                 
-            }
-        } 
-        return false;
-    } 
-
-    public boolean checkDiagnalWin(){
+            }             
+        }
+            
         if(board[0][0].getText().equals(board[1][1].getText()) && board[1][1].getText().equals(board[2][2].getText()) && 
              !board[0][0].getText().equals("") && !board[1][1].getText().equals("") && !board[2][2].getText().equals("")){
             gameStatus = false;
@@ -89,13 +78,7 @@ public class TicTacToe extends JFrame implements ActionListener{
             
         }
         else return false;
-    } 
-    
-    public boolean checkForAWin(){
-        if(checkDiagnalWin() || checkHorizontalWin() || checkVerticalWin()){
-            return true;
-        }
-        else return false;
+        
     }
     
     
@@ -108,14 +91,14 @@ public class TicTacToe extends JFrame implements ActionListener{
                 }
             }
         }
-        if(count == 9 && !checkVerticalWin() && !checkDiagnalWin() && !checkHorizontalWin()){
+        if(count == 9 && !checkForAWin()){
             gameStatus = false;
             return true;
            
         }
-        else{
-            return false;
-        }
+        else return false;
+            
+        
     }
     
     public boolean getGameStatus(){

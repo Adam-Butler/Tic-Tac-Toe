@@ -15,9 +15,7 @@ public class TicTacToeTest {
                if(tic.getMark(i,j).equals("")){
                    count++;
                } 
-               else{
-                   
-               }
+               else{}
             }
         }
 		assertEquals(9, count);
@@ -57,9 +55,6 @@ public class TicTacToeTest {
 	public void testGameIsNotOverAfterTheFirstMark() {
         TicTacToe tic = new TicTacToe();
         tic.markSpot(0,0);
-        assertFalse(tic.checkHorizontalWin());
-        assertFalse(tic.checkVerticalWin());
-        assertFalse(tic.checkDiagnalWin());
         assertTrue(tic.getGameStatus());
 		
 	}
@@ -72,14 +67,10 @@ public class TicTacToeTest {
         tic.markSpot(0,1);
         tic.markSpot(2,2);
         tic.markSpot(0,2);
-		assertTrue(tic.checkHorizontalWin());
+		assertTrue(tic.checkForAWin());
         assertTrue(tic.getCurrentPlayer());
 	}
     
-    
-    
-    
-	
 	@Test
 	public void testGameIsOverByTieIfAllLocationsAreFilled() {
         TicTacToe tic = new TicTacToe();
@@ -93,6 +84,7 @@ public class TicTacToeTest {
         tic.markSpot(2,0);
         tic.markSpot(2,1);
 		assertTrue(tic.checkForTie());
+        assertFalse(tic.getGameStatus());
 	}
     
     @Test    
@@ -103,7 +95,7 @@ public class TicTacToeTest {
         tic.markSpot(1,1);
         tic.markSpot(0,2);
         tic.markSpot(2,2);
-        assertTrue(tic.checkDiagnalWin());
+        assertTrue(tic.checkForAWin());
         assertTrue(tic.getCurrentPlayer());
     }
     @Test
@@ -115,7 +107,7 @@ public class TicTacToeTest {
         tic.markSpot(1,1);
         tic.markSpot(0,2);
         tic.markSpot(2,1);
-        assertTrue(tic.checkVerticalWin());
+        assertTrue(tic.checkForAWin());
         assertTrue(!tic.getCurrentPlayer());
         
     }
@@ -140,9 +132,33 @@ public class TicTacToeTest {
         tic.markSpot(0, 2);
         tic.markSpot(2,2);
         tic.markSpot(2,0);
-        assertTrue(tic.checkDiagnalWin());
+        assertTrue(tic.checkForAWin());
         assertTrue(tic.getCurrentPlayer());
     }
     
+    @Test
+    public void testOWinsDiagnally(){
+        TicTacToe tic = new TicTacToe();
+        tic.markSpot(0, 1);
+        tic.markSpot(0,0);
+        tic.markSpot(0,2);
+        tic.markSpot(1,1);
+        tic.markSpot(2,0);
+        tic.markSpot(2,2);
+        assertTrue(tic.checkForAWin());
+        assertFalse(tic.getCurrentPlayer());
+    }
     
+    @Test
+    public void testOWinsBottomHorizontal(){
+        TicTacToe tic = new TicTacToe();
+        tic.markSpot(0, 1);
+        tic.markSpot(2,0);
+        tic.markSpot(0,2);
+        tic.markSpot(2,1);
+        tic.markSpot(1,0);
+        tic.markSpot(2,2);
+        assertTrue(tic.checkForAWin());
+        assertFalse(tic.getCurrentPlayer());
+    }
 }
